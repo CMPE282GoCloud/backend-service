@@ -1,0 +1,319 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform:
+- AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    AutoPublishAlias: live
+    DeploymentPreference:
+      Enabled: true
+      Type: Canary10Percent5Minutes
+      Role: arn:aws:iam::369031899825:role/codedeploy-role
+  Api:
+    Cors:
+      AllowMethods: '''OPTIONS,POST,GET'''
+      AllowHeaders: '''Access-Control-Allow-Headers, Origin,Accept, X-Requested-With,
+        Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,
+        access-control-allow-origin'''
+      AllowOrigin: '''*'''
+Resources:
+  HelloWorld:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: python3.7
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /
+            Method: get
+      CodeUri: s3://gocloud-cmpe282/0b49dc5cd0996cf0811dfa0d4394fc8c
+  GetPincodeInfo:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get_pincode_info.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /pincode
+            Method: get
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  GetEstimate:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get_estimate.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /estimate
+            Method: get
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  Lexbot:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lexbot.handler
+      FunctionName: lexbot
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  LexRequest:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lex_request.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /lex
+            Method: post
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  PlaceOrder:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: place_order.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /placeorder
+            Method: post
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  GetLeastCost:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get_leastcost.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /leastcost
+            Method: get
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  GetDivisions:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get_divisions.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /divisions
+            Method: get
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  UpdatePrice:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: update_price.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /updateprice
+            Method: post
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  UpdateOrderStatus:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: update_order_status.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /updateOrderStatus
+            Method: post
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  GetOrders:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get_orders.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /orders
+            Method: get
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  AddUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: add_user.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /adduser
+            Method: post
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  AddVendor:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: add_vendor.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            Path: /addvendor
+            Method: post
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  GetSingleOrder:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get_single_order.handler
+      Runtime: python3.7
+      Timeout: 10
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /order
+            Method: get
+      CodeUri: s3://gocloud-cmpe282/b7a9ee4e87eb0ace2701f2f6de005caf
+  LambdaExecutionRole:
+    Description: Creating service role in IAM for AWS Lambda
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:
+        Fn::Sub: LambdaExecutionRole
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action: sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+      - arn:aws:iam::aws:policy/AmazonLexReadOnly
+      - arn:aws:iam::aws:policy/AmazonLexFullAccess
+  LocationsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Locations
+      PrimaryKey:
+        Name: Pincode
+        Type: Number
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  UsersTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Users
+      PrimaryKey:
+        Name: U_Email
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  VendorsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Vendors
+      PrimaryKey:
+        Name: V_Email
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  OrdersTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Orders
+      PrimaryKey:
+        Name: ID
+        Type: Number
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  PricesTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Prices
+      PrimaryKey:
+        Name: SourceDivision
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
