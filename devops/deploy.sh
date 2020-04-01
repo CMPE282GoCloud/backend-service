@@ -7,3 +7,4 @@ pip install -r requirements.txt
 zip -r lambda.zip *
 
 # Deploy using AWS CLI
+aws lambda update-function-code --function-name backend-lambda --zip-file fileb://lambda.zip
