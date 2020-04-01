@@ -7,4 +7,3 @@ pip install -r requirements.txt
 zip -r lambda.zip *
 
 # Deploy using AWS CLI
-
